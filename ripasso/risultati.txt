@@ -1,0 +1,1 @@
+media: 3.00 maggiore: 5.00 minore: 1.00
