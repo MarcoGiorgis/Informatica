@@ -23,7 +23,7 @@ class Player {
     }
 
     jump(alt) {
-        this.ySpeed = alt
+        this.ySpeed = alt;
     }
 
     setDirection(direction) {
@@ -78,7 +78,7 @@ class Platform {
     getType() { return this.type }
     getStato() { return this.rimossa }
     setStato(stato) { this.rimossa = stato }
-    //noStroke();
+
     show() {
         this.image.resize(40, 40)
         for (let k = this.x; k < this.x + this.width; k += 40) {
@@ -109,10 +109,12 @@ class Bot {
             this.x += this.spostamento;
         }
     }
-
-    hitsBot(player) { //da ricontrollare
-        return (this.x >= player.x && this.x <= player.x + player.width
-            && this.y == player.y)
+    
+    hitsBot(player) {
+        return (
+            (this.x >= player.x && this.x <= player.x + player.width) ||
+            (this.x + this.dim >= player.x && this.x + this.dim <= player.x + player.width)
+        ) && this.y == player.y;
     }
 }
 
@@ -126,7 +128,7 @@ class Money {
 
     show() {
         this.image.resize(this.dim, this.dim);
-        image(this.image, this.x, this.y)
+        image(this.image, this.x, this.y);
     }
 
     hitsMoney(player) {
@@ -144,6 +146,6 @@ class Vite {
     }
     show() {
         this.image.resize(this.dim, this.dim);
-        image(this.image, this.x, this.y)
+        image(this.image, this.x, this.y);
     }
 }
