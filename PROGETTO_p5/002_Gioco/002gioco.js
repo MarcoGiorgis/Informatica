@@ -12,12 +12,12 @@ let colpitoRight = false;
 let colpitoLeft = false;
 
 let vittoriaState = false; //gestione vittoria
-let vittoriaFlag = 1 //per gestione del suono dellla  vittoria
+let vittoriaFlag = 1; //per gestione del suono dellla  vittoria
 let gameOverState = false; //per pulsanti gameOver
 let gameState = "start";
 let pausatime = false;
 let ricominciaState = false;
-let tutorialState = false //per punteggio nel tutorial
+let tutorialState = false; //per punteggio nel tutorial
 
 // elementi che cambiano nei diversi livelli
 let xBandiera;
@@ -100,7 +100,7 @@ function setup() {
   frameRate(80);
   background(schermataIniziale);
   schermataTemporanea = schermataIniziale;
-  
+
   buttonStart = createButton('');
   buttonStart.position(55, 380);
   buttonStart.size(522, 170);
@@ -159,7 +159,7 @@ function tutorialPage() { //schermata tutorial istruzioni
   backButton.mousePressed(backButtonPressed);
 }
 
-function backButtonPressed() { //ritorno all'home
+function backButtonPressed() { //ritorno all'home dal tutorial
   soundClickMouse.play();
   resetGame();
   tutorialState = false; //stato tutorial 
@@ -168,7 +168,7 @@ function backButtonPressed() { //ritorno all'home
   buttonStart.show();
   buttonTutorial.show();
   gameState = "start"; // Torna allo stato iniziale
-  loop()
+  loop();
 }
 
 function setUpLevelTerra() {
@@ -224,7 +224,7 @@ function secondPageButtons() { //creazione bottoni seconda pagina
     buttonBackLevel.hide();
     soundStart.play();
   }
-  ricominciaState = false // da rivedere
+  ricominciaState = false
   for (let i = 0; i < 3; i++) {
     let button = createButton('');
     button.position(60 + i * 420, 285);
@@ -246,7 +246,7 @@ function secondPageButtons() { //creazione bottoni seconda pagina
   }
 }
 
-function backToLevel() {
+function backToLevel() { //bottone nella schermata gioco per tornare al scelta dei livelli
   soundClickMouse.play();
   livelloSelezionato = "";
   ricominciaState = true;
@@ -258,7 +258,7 @@ function backToLevel() {
   loop();
 }
 
-function createOrRemoveBackButton() {
+function createOrRemoveBackButton() { //gestione creazione e scomparsa bottone backToLevel
   if (!buttonBackLevelCreated) {
     buttonBackLevel = createButton('');
     buttonBackLevel.position(330, 22);
@@ -447,7 +447,7 @@ function checkCollision() {
   //collisione con bandiera 
   if (player.x >= getXbandiera() && player.x <= (getXbandiera() + 50) && player.y >= getYbandiera() && player.y <= (getYbandiera() + 50)) {
     bandiera = vittoria;
-    if(vittoriaFlag == 1){
+    if (vittoriaFlag == 1) {
       soundPassaggioLivello.play();
       vittoriaFlag = 0;
       setTimeout(() => { vittoriaState = true }, 1500);
@@ -456,12 +456,17 @@ function checkCollision() {
 }
 
 function keyPressed() {
-  if (key == 'a' && colpitoLeft == false) {
-    colpitoRight = false;
-    player.setDirection(-1); // Set direzione sinistra
-  } else if (key == 'd' && colpitoRight == false) {
-    player.setDirection(1); // Set direzione destra
-    colpitoLeft = true;
+  colpitoRight = false;
+  colpitoLeft = false;
+
+  if (key == 'a' && !colpitoLeft) {
+    if (!checkCollisionLateraleSinistra()) { //non è presente una collisione a sinistra
+      player.setDirection(-1); // Set direzione sinistra
+    }
+  } else if (key == 'd' && !colpitoRight) {
+    if (!checkCollisionLateraleDestra()) { //non è presente una collisione a destra
+      player.setDirection(1); // Set direzione destra
+    }
   } else if (key == 'w' && numSalti < 2) {
     soundJump.play();
     colpitoRight = false;
@@ -471,6 +476,24 @@ function keyPressed() {
   } else if (key == 'r' && tutorialState == false) {
     resetGame();
   }
+}
+
+function checkCollisionLateraleSinistra() {
+  for (let platform of platforms) {
+    if (player.hitsSideLeft(platform)) { 
+      return true; 
+    }
+  }
+  return false; 
+}
+
+function checkCollisionLateraleDestra() {
+  for (let platform of platforms) {
+    if (player.hitsSideRight(platform)) { 
+      return true; 
+    }
+  }
+  return false; 
 }
 
 function keyReleased() {
@@ -507,8 +530,7 @@ function mouseClicked() {
   }
   if (d4 < 50 && vittoriaState == true) {
     soundClickMouse.play();
-    finalWindow();
-    noLoop();
+    setTimeout(() => { window.close() }, 200);
   }
   if (d5 < 50 && gameOverState == true) {
     soundClickMouse.play();
@@ -516,23 +538,14 @@ function mouseClicked() {
   }
   if (d6 < 50 && gameOverState == true) {
     soundClickMouse.play();
-    finalWindow();
-    noLoop();
+    setTimeout(() => { window.close() }, 200);
   }
-}
-
-function finalWindow() {
-  background(200);
-  fill(0);
-  textSize(50);
-  text("THANKS", width / 2 - 30, height / 2);
-  setTimeout(() => { window.close() }, 3000); //millesimi secondi
 }
 
 function resetGame() {
   soundSottofondo.stop();
-  pausatime = false; player = new Player(); platforms = []; bots = []; moneys = []; hearts = []; numSalti = 0; 
-  punteggio = 0; vite = 4; colpitoRight = false; colpitoLeft = false; vittoriaState = false; 
+  pausatime = false; player = new Player(); platforms = []; bots = []; moneys = []; hearts = []; numSalti = 0;
+  punteggio = 0; vite = 4; colpitoRight = false; colpitoLeft = false; vittoriaState = false;
   rimossaPiattaforma = false; gameOverState = false; pausatime = false; vittoriaFlag = 1;
 
   if (livelloSelezionato == "Terra") {

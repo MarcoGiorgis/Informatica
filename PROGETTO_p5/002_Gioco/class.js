@@ -18,8 +18,8 @@ class Player {
         this.x += this.xSpeed;
         this.ySpeed += this.gravity;
         this.y += this.ySpeed;
-        this.x = constrain(this.x, 0, width - 20); //capire
-        this.y = constrain(this.y, 0, height - 70);
+        this.x = constrain(this.x, 0, width - 20); //limita i valori di x nello schermo 
+        this.y = constrain(this.y, 0, height - 70); //limita i valori di y nello schermo
     }
 
     jump(alt) {
