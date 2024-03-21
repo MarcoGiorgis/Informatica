@@ -1,0 +1,6 @@
+public class Studente{
+	private String Nome;
+	private String Cognome;
+	private int Eta;
+	private double Voto;
+}

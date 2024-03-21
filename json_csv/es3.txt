@@ -1,0 +1,9 @@
+public class Persone{
+	private Vector<Persona> persone;
+{
+
+public class Persona{
+	private String nome;
+	private String cognome;
+	private int eta;
+}

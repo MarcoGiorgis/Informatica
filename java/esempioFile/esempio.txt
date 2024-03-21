@@ -1,0 +1,7 @@
+Una stringa: Prima riga
+Un numero: 1
+Ho finito.
+0
+1
+2
+ultima riga
