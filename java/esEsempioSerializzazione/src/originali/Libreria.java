@@ -22,10 +22,16 @@ public class Libreria {
         this.libri = libri;
     }
 
+    public float getValore(){
+        float tot = 0;
+        for(Libro l: libri){
+            tot += l.getPrezzo();
+        }
+        return tot;
+    }
+
     @Override
     public String toString() {
         return "Libreria = " + libri ;
     }
-
-
 }
